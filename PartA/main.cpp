@@ -14,6 +14,7 @@ int main()
     // Input size of square matrices
     int N;
     cin >> N;
+    cout << "Input matrix of size " << N << "\n";
     
     // Input matrix A
     int *matA = new int[N * N];
