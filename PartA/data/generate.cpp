@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-#define N 1024
+#define N 8192
 
 int main()
 {
