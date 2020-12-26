@@ -44,24 +44,31 @@ void reference(int N, int *matA, int *matB, int *output)
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     // Input size of square matrices
     int N;
-    cin >> N;
+    string file_name; 
+    if (argc < 2) 
+        file_name = "data/input_8192.in"; 
+    else 
+        file_name = argv[1]; 
+    ifstream input_file; 
+    input_file.open(file_name); 
+    input_file >> N;
     cout << "Input matrix of size " << N << "\n";
     
     // Input matrix A
     int *matA = new int[N * N];
     for(int i = 0; i < N; ++i)
         for(int j = 0; j < N; ++j)
-            cin >> matA[i * N + j];
+            input_file >> matA[i * N + j];
 
     // Input matrix B
     int *matB = new int[N * N];
     for(int i = 0; i < N; ++i)
         for(int j = 0; j < N; ++j)
-            cin >> matB[i * N + j];
+            input_file >> matB[i * N + j];
     
     // Untimed, warmup caches and TLB
     int *output_reference = new int[2 * N - 1];
@@ -98,4 +105,7 @@ int main()
             cout << "Mismatch at " << i << "\n";
             exit(1);
         }
+
+    input_file.close(); 
+    return 0; 
 }
