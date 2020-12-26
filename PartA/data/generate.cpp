@@ -11,26 +11,28 @@ int main(int argc, char *argv[])
         N = 8192;
     else 
         N = atoi(argv[1]); 
-    ofstream ofile; 
+    ofstream output_file; 
     string file_name = "data/input_" + to_string(N) + ".in";  
-    ofile.open(file_name); 
+    output_file.open(file_name); 
 
     // Set seed
     srand(1);
     
     // Output square matrix size
-    ofile << N << "\n"; 
+    output_file << N << "\n"; 
     // Generate matrix A
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < N; ++j)
-            ofile << rand() % 256 << " ";
-        ofile << "\n";
+            output_file << rand() % 256 << " ";
+        output_file << "\n";
     }
     
     // Generate matrix B
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < N; ++j)
-            ofile << rand() % 256 << " ";
-        ofile << "\n";
+            output_file << rand() % 256 << " ";
+        output_file << "\n";
     }
+    output_file.close(); 
+    return 0; 
 }
