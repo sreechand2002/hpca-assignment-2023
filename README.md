@@ -2,7 +2,7 @@
 Optimize diagonal matrix multiplication using hardware counters.
 Contained are two folders:
 * PartA: Contains setup for single-threaded and multi-threaded program.
-* PartB: Contains setup for GPU program.
+* PartB (**TO  BE RELEASED SOON**): Contains setup for GPU program.
 
 Each folder contains two sub-folders, a Makefile, and a main program.
 * Makefile: Contains commands necessary to compile, generate inputs, and run the program.
@@ -13,12 +13,18 @@ Each folder contains two sub-folders, a Makefile, and a main program.
 Navigate to each folder to begin setting up the system.
 Inside each folder do the following:
 ### Compiling and generating input
+Use the following command to compile the programs and generate required input:
 ```
 make
 ```
 ### Running program
+You can use make to run the executable with the following command:
 ```
 make run
+```
+Alternatively, you can manually run the program using the following command:
+```
+./diag_mult data/input_8192.in
 ```
 
 
