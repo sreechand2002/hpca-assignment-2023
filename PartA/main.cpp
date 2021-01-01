@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     for(int i = 0; i < 2 * N - 1; ++i)
         if(output_single[i] != output_reference[i]) {
             cout << "Mismatch at " << i << "\n";
-            exit(1);
+            exit(0);
         }
     
     // Execute multi-thread
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     for(int i = 0; i < 2 * N - 1; ++i)
         if(output_multi[i] != output_reference[i]) {
             cout << "Mismatch at " << i << "\n";
-            exit(1);
+            exit(0);
         }
 
     input_file.close(); 

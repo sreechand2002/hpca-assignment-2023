@@ -22,9 +22,11 @@ You can use make to run the executable with the following command:
 ```
 make run
 ```
-Alternatively, you can manually run the program using the following command:
+Alternatively, you can manually run the program for the different input sets using the following commands:
 ```
+./diag_mult data/input_4096.in
 ./diag_mult data/input_8192.in
+./diag_mult data/input_16384.in
 ```
 
 
