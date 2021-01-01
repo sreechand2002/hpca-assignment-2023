@@ -1,7 +1,7 @@
 all: data/input_4096.in data/input_8192.in data/input_16384.in diag_mult
 
 diag_mult: main.cpp header/single_thread.h header/multi_thread.h
-	g++ main.cpp -o diag_mult -I ./header
+	g++ main.cpp -o diag_mult -I ./header -lpthread
 
 data/generate: data/generate.cpp
 	g++ ./data/generate.cpp -o ./data/generate
