@@ -1,7 +1,7 @@
 all: data/input_128.in diag_mult
 
 diag_mult: main.cu header/gpu_thread.h
-	nvcc main.cu -o diag_mult -I ./header --cudart shared
+	nvcc main.cu -o diag_mult -I ./header --cudart shared -gencode arch=compute_70,code=compute_70
 
 data/generate: data/generate.cpp
 	g++ ./data/generate.cpp -o ./data/generate
