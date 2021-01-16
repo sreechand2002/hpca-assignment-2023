@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     int N;
     string file_name; 
     if (argc < 2) 
-        file_name = "data/input_8192.in"; 
+        file_name = "data/input_128.in"; 
     else 
         file_name = argv[1]; 
     ifstream input_file; 
