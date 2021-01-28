@@ -31,11 +31,20 @@ Alternatively, you can manually run the program for the different input sets usi
 ```
 
 ## PART B
-You can use make to run the executable with the following command:
+To compile the code for use on native GPU use the following command:
 ```
-make run
+make server
 ```
-Alternatively, you can manually run the program for the different input sets using the following commands:
+For use with GPGPU-Sim, additional flags are required during compilation, which can be done with the following command:
 ```
-./diag_mult data/input_128.in
+make sim
+```
+
+You can use make to run the executable with the following command for native execution:
+```
+make run_server
+```
+When running on GPGPU-Sim, use the following command instead:
+```
+make run_sim
 ```
