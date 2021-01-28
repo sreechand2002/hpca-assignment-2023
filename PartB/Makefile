@@ -1,6 +1,11 @@
-all: data/input_128.in diag_mult
+sim: data/input_128.in diag_mult_sim
 
-diag_mult: main.cu header/gpu_thread.h
+server: data/input_128.in diag_mult_server
+
+diag_mult_server: main.cu header/gpu_thread.h
+	nvcc main.cu -o diag_mult_server -I ./header
+
+diag_mult_sim: main.cu header/gpu_thread.h
 	nvcc main.cu -o diag_mult -I ./header --cudart shared -gencode arch=compute_70,code=compute_70
 
 data/generate: data/generate.cpp
@@ -9,8 +14,11 @@ data/generate: data/generate.cpp
 data/input_128.in: data/generate
 	./data/generate 128
 
-run: data/input_128.in diag_mult
-	./diag_mult data/input_128.in
+run_sim: data/input_128.in diag_mult_sim
+	./diag_mult_sim data/input_128.in
+	
+run_server: data/input_128.in diag_mult_server
+	./diag_mult_server data/input_128.in
 
 clean:
-	rm diag_mult
+	rm -f diag_mult_sim diag_mult_server
