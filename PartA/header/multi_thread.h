@@ -4,7 +4,15 @@
 
 
 // Fill in this function
-void multiThread(int N, int *matA, int *matB, int *output)
+void multiThread( int input_row, 
+                int input_col,
+                int *input, 
+                int kernel_row, 
+                int kernel_col, 
+                int *kernel,
+                int output_row, 
+                int output_col, 
+                int *output ) 
 {
-    
+
 }

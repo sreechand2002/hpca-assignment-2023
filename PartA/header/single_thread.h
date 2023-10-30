@@ -1,31 +1,29 @@
 // Optimize this function
-void singleThread(int N, int *matA, int *matB, int *output)
+void singleThread( int input_row, 
+                int input_col,
+                int *input, 
+                int kernel_row, 
+                int kernel_col, 
+                int *kernel,
+                int output_row, 
+                int output_col, 
+                int *output ) 
 {
-    // Iterate over first half of output elements
-    for(int i = 0; i < N; ++i) {
-        int temp = 0;
-        // Iterate over diagonal elements
-        for(int j = 0; j < i + 1; ++j) {
-            int rowA = j;
-            int colA = i - j;
-            int rowB = i - j;
-            int colB = N - j - 1;
-            temp += matA[rowA * N + colA] * matB[rowB * N + colB];
+
+    for(int output_i = 0; output_i< output_row; output_i++)
+    {
+        for(int output_j = 0; output_j< output_col; output_j++)
+        {
+            for(int kernel_i = 0; kernel_i< kernel_row; kernel_i++)
+            {
+                for(int kernel_j = 0; kernel_j< kernel_col; kernel_j++)
+                {
+                    int input_i = (output_i + 2*kernel_i) % input_row;
+                    int input_j = (output_j + 2*kernel_j) % input_col;
+                    output[output_i * output_col + output_j] += input[input_i*input_col +input_j] 
+                                                                * kernel[kernel_i*kernel_col +kernel_j];
+                }
+            }
         }
-        output[i] = temp;
-    }
-    
-    // Iterate over second half of output elements
-    for(int i = N; i < 2 * N - 1; ++i) {
-        int temp = 0;
-        // Iterate over diagonal elements
-        for(int j = 0; j < 2 * N - (i + 1); ++j) {
-            int rowA = i + 1 + j - N;
-            int colA = N - j - 1;
-            int rowB = N - j - 1;
-            int colB = 2 * N - j - 2 - i;
-            temp += matA[rowA * N + colA] * matB[rowB * N + colB];
-        }
-        output[i] = temp;
     }
 }

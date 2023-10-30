@@ -4,6 +4,8 @@
 #include <ctime>
 #include <chrono>
 #include <fstream>
+#include <unistd.h>
+#include <string>
 using namespace std;
 
 #define TIME_NOW std::chrono::high_resolution_clock::now()
@@ -13,99 +15,134 @@ using namespace std;
 #include "multi_thread.h"
 
 // Used to cross-check answer. DO NOT MODIFY!
-void reference(int N, int *matA, int *matB, int *output)
+void reference( int input_row, 
+                int input_col,
+                int *input, 
+                int kernel_row, 
+                int kernel_col, 
+                int *kernel,
+                int output_row, 
+                int output_col, 
+                int *output ) 
 {
-    // Iterate over first half of output elements
-    for(int i = 0; i < N; ++i) {
-        int temp = 0;
-        // Iterate over diagonal elements
-        for(int j = 0; j < i + 1; ++j) {
-            int rowA = j;
-            int colA = i - j;
-            int rowB = i - j;
-            int colB = N - j - 1;
-            temp += matA[rowA * N + colA] * matB[rowB * N + colB];
+
+    for(int output_i = 0; output_i< output_row; output_i++)
+    {
+        for(int output_j = 0; output_j< output_col; output_j++)
+        {
+            for(int kernel_i = 0; kernel_i< kernel_row; kernel_i++)
+            {
+                for(int kernel_j = 0; kernel_j< kernel_col; kernel_j++)
+                {
+                    int input_i = (output_i + 2*kernel_i) % input_row;
+                    int input_j = (output_j + 2*kernel_j) % input_col;
+                    output[output_i * output_col + output_j] += input[input_i*input_col +input_j] 
+                                                                * kernel[kernel_i*kernel_col +kernel_j];
+                }
+            }
         }
-        output[i] = temp;
-    }
-    
-    // Iterate over second half of output elements
-    for(int i = N; i < 2 * N - 1; ++i) {
-        int temp = 0;
-        // Iterate over diagonal elements
-        for(int j = 0; j < 2 * N - (i + 1); ++j) {
-            int rowA = i + 1 + j - N;
-            int colA = N - j - 1;
-            int rowB = N - j - 1;
-            int colB = 2 * N - j - 2 - i;
-            temp += matA[rowA * N + colA] * matB[rowB * N + colB];
-        }
-        output[i] = temp;
     }
 }
 
 int main(int argc, char *argv[])
 {
-    // Input size of square matrices
-    int N;
-    string file_name; 
-    if (argc < 2) 
-        file_name = "data/input_8192.in"; 
-    else 
-        file_name = argv[1]; 
-    ifstream input_file; 
-    input_file.open(file_name); 
-    input_file >> N;
-    cout << "Input matrix of size " << N << "\n";
-    
-    // Input matrix A
-    int *matA = new int[N * N];
-    for(int i = 0; i < N; ++i)
-        for(int j = 0; j < N; ++j)
-            input_file >> matA[i * N + j];
+    // Define default file names
+    string input_file_name = "data/128.in";
+    string kernel_file_name = "data/64.in";
 
-    // Input matrix B
-    int *matB = new int[N * N];
-    for(int i = 0; i < N; ++i)
-        for(int j = 0; j < N; ++j)
-            input_file >> matB[i * N + j];
+    // Parse command line arguments
+    int opt;
+    while ((opt = getopt(argc, argv, "hi:k:")) != -1) {
+        switch (opt) {
+            case 'h':
+                std::cout << "Program expects two command line arguments:" << std::endl;
+                std::cout << "  -i <input_file_name>: Name of the file for the input matrix" << std::endl;
+                std::cout << "  -k <kernel_file_name>: Name of the file for the kernel matrix" << std::endl;
+                std::cout << "If either of them is not mentioned, it takes the default as:" << std::endl;
+                std::cout << "  - data/128.in for the input matrix" << std::endl;
+                std::cout << "  - data/64.in for the kernel matrix" << std::endl;
+                return 0;
+            case 'i':
+                input_file_name = optarg;
+                break;
+            case 'k':
+                kernel_file_name = optarg;
+                break;
+            default:
+                std::cerr << "Usage: " << argv[0] << " [-h] [-i <input_file_name>] [-k <kernel_file_name>]" << std::endl;
+                return 1;
+        }
+    }
+
+    // Print input and kernel file names
+    std::cout << "Input file name: " << input_file_name << std::endl;
+    std::cout << "Kernel file name: " << kernel_file_name << std::endl;
+
+    int input_row, input_col, kernel_row, kernel_col;
     
+    ifstream input_file; 
+    input_file.open(input_file_name); 
+    input_file >> input_row >> input_col;
+    cout << "Input matrix dimensions : " << input_row <<"x"<<input_col<< endl;
+    
+    // Input matrix 
+    int *input = new int[input_row * input_col];    
+    for(int i = 0; i < input_row; ++i)
+        for(int j = 0; j < input_col; ++j)
+            input_file >> input[i * input_col + j];
+
+    ifstream kernel_file; 
+    kernel_file.open(kernel_file_name); 
+    kernel_file >> kernel_row >> kernel_col;
+    cout << "Kernel matrix dimensions : " << kernel_row <<"x"<<kernel_col<< endl;
+    
+    // Kernel matrix 
+    int *kernel = new int[kernel_row * kernel_col];    
+    for(int i = 0; i < kernel_row; ++i)
+        for(int j = 0; j < kernel_col; ++j)
+            kernel_file >> kernel[i * kernel_col + j];
+
+    int output_row = input_row - kernel_row + 1;
+    int output_col = input_col - kernel_col + 1;
     // Untimed, warmup caches and TLB
-    int *output_reference = new int[2 * N - 1];
-    reference(N, matA, matB, output_reference);    
+    int *output_reference = new int[output_row * output_col];
+    reference(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference);    
     
     // Execute reference program
     auto begin = TIME_NOW;
-    reference(N, matA, matB, output_reference);
+    reference(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference);    
     auto end = TIME_NOW;
     cout << "Reference execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";    
     
     // Execute single thread
-    int *output_single = new int[2 * N - 1];
+    int *output_single = new int[output_row * output_col];
     begin = TIME_NOW;
-    singleThread(N, matA, matB, output_single);
+    singleThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference); 
     end = TIME_NOW;
     cout << "Single thread execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";
     
-    for(int i = 0; i < 2 * N - 1; ++i)
+    for(int i = 0; i < output_row * output_col; ++i)
         if(output_single[i] != output_reference[i]) {
             cout << "Mismatch at " << i << "\n";
+            cout << "SingleThread output: " << output_single[i] << ", required output: " << output_reference[i] << "\n";
             exit(0);
         }
     
     // Execute multi-thread
-    int *output_multi = new int[2 * N - 1];
+    int *output_multi = new int[output_row * output_col];
     begin = TIME_NOW;
-    multiThread(N, matA, matB, output_multi);
+    multiThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference); 
     end = TIME_NOW;
     cout << "Multi-threaded execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";
     
-    for(int i = 0; i < 2 * N - 1; ++i)
+    for(int i = 0; i < output_row * output_col; ++i)
         if(output_multi[i] != output_reference[i]) {
             cout << "Mismatch at " << i << "\n";
+            cout << "Multi-Thread output: " << output_multi[i] << ", required output: " << output_reference[i] << "\n";
             exit(0);
         }
 
-    input_file.close(); 
+    input_file.close();
+    kernel_file.close(); 
     return 0; 
 }
