@@ -1,5 +1,5 @@
 # HPCA Assignment
-Optimize diagonal matrix multiplication using hardware counters.
+Optimize dilated convolution using hardware counters.
 Contained are two folders:
 * PartA: Contains setup for single-threaded and multi-threaded program.
 * PartB: Contains setup for GPU program.
@@ -25,11 +25,11 @@ make run
 ```
 Alternatively, you can manually run the program for the different input sets using the following commands:
 ```
-./diag_mult data/input_4096.in
-./diag_mult data/input_8192.in
-./diag_mult data/input_16384.in
+./dilated_conv -i data/4096.in -k data/1024.in
+./dilated_conv -i data/8192.in -k data/1024.in
+./dilated_conv -i data/16384.in -k data/1024.in
 ```
-
+Note: the `-i` flag is for the input matrix and `-k` flag is for the kernel matrix.
 ## PART B
 To compile the code for use on native GPU use the following command:
 ```
