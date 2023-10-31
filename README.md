@@ -9,13 +9,13 @@ B. Kernel Matrix of dimensions: $\text{Kernel-Row} \times \text{Kernel-Column}$.
 
 ### Output:  
 
-An Output Matrix of dimensions: $(\text{Input-Row}-\text{Kernel-Row}+1)  \times (\text{Input-Column} – \text{Kernel-Column} +1)$ 
+An Output Matrix of dimensions: $(\text{Input-Row}-\text{Kernel-Row}+1)  \times (\text{Input-Column} - \text{Kernel-Column} +1)$ 
 
 ### Explanation and algorithm of DC: 
 
 Dilated Convolution (DL) is a variant of the convolution operation. Following is the explanation of the algorithm: 
 
-Let us assume that for the explanation of the algorithm that the dimensions of the Input Matrix and Kernel Matrix are as follows: 
+Let us assume for the explanation of the algorithm that the dimensions of the Input Matrix and Kernel Matrix are as follows: 
 
 A. Input Matrix $(I)$: $4\times4$
 
@@ -23,16 +23,16 @@ B. Kernel Matrix $(K)$: $2\times2$
 
 So, dimensions of the Output Matrix $(O)$ shall be (based on calculation): $3\times3$. 
 
-[ $\text{Output-Row} = \text{Input-Row} – \text{Kernel-Row} + 1 = 4 - 2 + 1 = 3$. Calculation is similar for $\text{Output-Column}$.] 
+[ $\text{Output-Row} = \text{Input-Row} - \text{Kernel-Row} + 1 = 4 - 2 + 1 = 3$. Calculation is similar for $\text{Output-Column}$.] 
 
-The Kernel Matrix $(K)$ slides over the Input Matrix $(I)$ and produces each cell of the Output Matrix $(O)$ as shown below. In the diagrams below, The Kernel Matrix $(K)$ is the left-most, the Input-Matrix $(I)$ is in the middle, and the Output Matrix $(O)$ is the right-most.
+The Kernel Matrix $(K)$ slides over the Input Matrix $(I)$ and produces each cell of the Output Matrix $(O)$ as shown below. In the animation below, The Kernel Matrix $(K)$ is the left-most, the Input-Matrix $(I)$ is in the middle, and the Output Matrix $(O)$ is the right-most.
 
 ![Algorithm Animation](./docs/Dilated_convolution.gif)
 
 ---
 
 ## Optimize dilated convolution using hardware counters.
-Contained are two folders:
+Contained are three folders:
 * PartA: Contains setup for single-threaded and multi-threaded program.
 * PartB: Contains setup for GPU program.
 * test: Contains a test program to aid in understanding the algorithm.
