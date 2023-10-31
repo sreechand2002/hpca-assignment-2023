@@ -3,13 +3,13 @@ In this assignment, your task is to optimize the problem of “Dilated Convoluti
 
 ### Input:  
 
-A. Input Matrix of dimensions: $\text{Input\_Row} \times \text{Input\_Column}$.
+A. Input Matrix of dimensions: $\text{Input-Row} \times \text{Input-Column}$.
 
-B. Kernel Matrix of dimensions: $\text{Kernel\_Row} \times \text{Kernel\_Column}$. 
+B. Kernel Matrix of dimensions: $\text{Kernel-Row} \times \text{Kernel-Column}$. 
 
 ### Output:  
 
-An Output Matrix of dimensions: $(\text{Input\_Row}-\text{Kernel\_Row}+1)  \times (\text{Input\_Column} – \text{Kernel\_Column} +1)$ 
+An Output Matrix of dimensions: $(\text{Input-Row}-\text{Kernel-Row}+1)  \times (\text{Input-Column} – \text{Kernel-Column} +1)$ 
 
 ### Explanation and algorithm of DC: 
 
@@ -23,7 +23,7 @@ B. Kernel Matrix $(K)$: $2\times2$
 
 So, dimensions of the Output Matrix $(O)$ shall be (based on calculation): $3\times3$. 
 
-[ $\text{Output\_Row} = \text{Input\_Row} – \text{Kernel\_Row} + 1 = 4 - 2 + 1 = 3$. Calculation is similar for $\text{Output\_Column}$.] 
+[ $\text{Output-Row} = \text{Input-Row} – \text{Kernel-Row} + 1 = 4 - 2 + 1 = 3$. Calculation is similar for $\text{Output-Column}$.] 
 
 The Kernel Matrix $(K)$ slides over the Input Matrix $(I)$ and produces each cell of the Output Matrix $(O)$ as shown below. In the diagrams below, The Kernel Matrix $(K)$ is the left-most, the Input-Matrix $(I)$ is in the middle, and the Output Matrix $(O)$ is the right-most.
 
