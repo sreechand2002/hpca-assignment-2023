@@ -1,10 +1,43 @@
 # HPCA Assignment
-Optimize dilated convolution using hardware counters.
+In this assignment, your task is to optimize the problem of “Dilated Convolution (DC)” which involves an input matrix and a kernel matrix. The sample algorithm is depicted below using an animation.
+
+### Input:  
+
+A. Input Matrix of dimensions: $\text{Input\_Row} \times \text{Input\_Column}$.
+
+B. Kernel Matrix of dimensions: $\text{Kernel\_Row} \times \text{Kernel\_Column}$. 
+
+### Output:  
+
+An Output Matrix of dimensions: $(\text{Input\_Row}-\text{Kernel\_Row}+1)  \times (\text{Input\_Column} – \text{Kernel\_Column} +1)$ 
+
+### Explanation and algorithm of DC: 
+
+Dilated Convolution (DL) is a variant of the convolution operation. Following is the explanation of the algorithm: 
+
+Let us assume that for the explanation of the algorithm that the dimensions of the Input Matrix and Kernel Matrix are as follows: 
+
+A. Input Matrix $(I)$: $4\times4$
+
+B. Kernel Matrix $(K)$: $2\times2$ 
+
+So, dimensions of the Output Matrix $(O)$ shall be (based on calculation): $3\times3$. 
+
+[ $\text{Output\_Row} = \text{Input\_Row} – \text{Kernel\_Row} + 1 = 4 - 2 + 1 = 3$. Calculation is similar for $\text{Output\_Column}$.] 
+
+The Kernel Matrix $(K)$ slides over the Input Matrix $(I)$ and produces each cell of the Output Matrix $(O)$ as shown below. In the diagrams below, The Kernel Matrix $(K)$ is the left-most, the Input-Matrix $(I)$ is in the middle, and the Output Matrix $(O)$ is the right-most.
+
+![Algorithm Animation](./docs/Dilated_convolution.gif)
+
+---
+
+## Optimize dilated convolution using hardware counters.
 Contained are two folders:
 * PartA: Contains setup for single-threaded and multi-threaded program.
 * PartB: Contains setup for GPU program.
+* test: Contains a test program to aid in understanding the algorithm.
 
-Each folder contains two sub-folders, a Makefile, and a main program.
+Each of the folders PartA and PartB contain two sub-folders, a Makefile, and a main program.
 * Makefile: Contains commands necessary to compile, generate inputs, and run the program.
 * data folder: Contains program that generates input, and will contain input once generated.
 * header folder: Files containing the function that performs the operation. Modify the files in this folder.
@@ -48,3 +81,9 @@ When running on GPGPU-Sim, use the following command instead:
 ```
 make run_sim
 ```
+
+## test
+
+This directory contains a simple program to help you understand how the algorithm works. You can play around with the sizes of the Input-Matrix $(I)$ and Kernel-Matrix $(K)$ to get a flavor of how each cell of Output-Matrix $(O)$ is generated. A stripped output of test executable mentioned above for the example discussed is as follows:
+
+![test_example_output](./docs/test_example.png)
