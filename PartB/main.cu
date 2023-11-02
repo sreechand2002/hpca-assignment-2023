@@ -18,8 +18,11 @@ void reference( int input_row,
                 int *kernel,
                 int output_row, 
                 int output_col, 
-                int *output ) 
+                long long unsigned int *output ) 
 {
+
+    for(int i = 0; i < output_row * output_col; ++i)
+        output[i] = 0;
 
     for(int output_i = 0; output_i< output_row; output_i++)
     {
@@ -101,11 +104,11 @@ int main(int argc, char *argv[])
     int output_col = input_col - kernel_col + 1;
     
     // Execute reference program
-    int *output_reference = new int[output_row * output_col];
+    long long unsigned int *output_reference = new long long unsigned int[output_row * output_col];
     reference(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference);    
     
     // Execute gpuThread
-    int *output_gpu = new int[output_row * output_col];
+    long long unsigned int *output_gpu = new long long unsigned int[output_row * output_col];
     gpuThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_gpu);    
     
     for(int i = 0; i < output_row * output_col; ++i)

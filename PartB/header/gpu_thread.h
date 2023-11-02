@@ -9,7 +9,7 @@ void gpuThread( int input_row,
                 int *kernel,
                 int output_row, 
                 int output_col, 
-                int *output ) 
+                long long unsigned int *output ) 
 {
     
 }

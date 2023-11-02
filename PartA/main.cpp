@@ -23,8 +23,11 @@ void reference( int input_row,
                 int *kernel,
                 int output_row, 
                 int output_col, 
-                int *output ) 
+                long long unsigned int *output ) 
 {
+
+    for(int i = 0; i < output_row * output_col; ++i)
+        output[i] = 0;
 
     for(int output_i = 0; output_i< output_row; output_i++)
     {
@@ -105,7 +108,7 @@ int main(int argc, char *argv[])
     int output_row = input_row - kernel_row + 1;
     int output_col = input_col - kernel_col + 1;
     // Untimed, warmup caches and TLB
-    int *output_reference = new int[output_row * output_col];
+    long long unsigned int *output_reference = new long long unsigned int[output_row * output_col];
     reference(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference);    
     
     // Execute reference program
@@ -115,9 +118,9 @@ int main(int argc, char *argv[])
     cout << "Reference execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";    
     
     // Execute single thread
-    int *output_single = new int[output_row * output_col];
+    long long unsigned int *output_single = new long long unsigned int[output_row * output_col];
     begin = TIME_NOW;
-    singleThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference); 
+    singleThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_single); 
     end = TIME_NOW;
     cout << "Single thread execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";
     
@@ -129,9 +132,9 @@ int main(int argc, char *argv[])
         }
     
     // Execute multi-thread
-    int *output_multi = new int[output_row * output_col];
+    long long unsigned int *output_multi = new long long unsigned int[output_row * output_col];
     begin = TIME_NOW;
-    multiThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference); 
+    multiThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_multi); 
     end = TIME_NOW;
     cout << "Multi-threaded execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";
     

@@ -7,8 +7,11 @@ void singleThread( int input_row,
                 int *kernel,
                 int output_row, 
                 int output_col, 
-                int *output ) 
+                long long unsigned int *output ) 
 {
+    
+    for(int i = 0; i < output_row * output_col; ++i)
+        output[i] = 0;
 
     for(int output_i = 0; output_i< output_row; output_i++)
     {
