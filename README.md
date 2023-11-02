@@ -58,9 +58,9 @@ make run
 ```
 Alternatively, you can manually run the program for the different input sets using the following commands:
 ```
-./dilated_conv -i data/4096.in -k data/1024.in
-./dilated_conv -i data/8192.in -k data/1024.in
-./dilated_conv -i data/16384.in -k data/1024.in
+./dilated_conv -i data/4096.in -k data/13.in
+./dilated_conv -i data/8192.in -k data/64.in
+./dilated_conv -i data/16384.in -k data/3.in
 ```
 Note: the `-i` flag is for the input matrix and `-k` flag is for the kernel matrix.
 ## PART B
