@@ -1,22 +1,7 @@
-// Create other necessary functions here
 
-// Fill in this function
-// void gpuThread( int input_row, 
-//                 int input_col,
-//                 int *input, 
-//                 int kernel_row, 
-//                 int kernel_col, 
-//                 int *kernel,
-//                 int output_row, 
-//                 int output_col, 
-//                 long long unsigned int *output ) 
-// {
-    
-// }
-// Optimize this function
 #include <cuda_runtime.h>
 
-// CUDA kernel to perform dilated convolution
+
 __global__ void cudaSingleThread(int input_row,
                                   int input_col,
                                   int *input,
@@ -45,7 +30,7 @@ __global__ void cudaSingleThread(int input_row,
     }
 }
 
-// Wrapper function for launching the CUDA kernel
+
 void launchCudaSingleThread(int input_row,
                              int input_col,
                              int *input,
@@ -56,7 +41,6 @@ void launchCudaSingleThread(int input_row,
                              int output_col,
                              long long unsigned int *output) {
 
-    // Allocate device memory
     int *d_input, *d_kernel;
     long long unsigned int *d_output;
 
@@ -64,18 +48,18 @@ void launchCudaSingleThread(int input_row,
     cudaMalloc((void**)&d_kernel, kernel_row * kernel_col * sizeof(int));
     cudaMalloc((void**)&d_output, output_row * output_col * sizeof(long long unsigned int));
 
-    // Copy input and kernel matrices to device
+   
     cudaMemcpy(d_input, input, input_row * input_col * sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(d_kernel, kernel, kernel_row * kernel_col * sizeof(int), cudaMemcpyHostToDevice);
 
-    // Define block and grid dimensions
-    dim3 blockSize(16, 16);  // Adjust block size as needed
+ 
+    dim3 blockSize(16, 16);  
     dim3 gridSize((output_row + blockSize.x - 1) / blockSize.x, (output_col + blockSize.y - 1) / blockSize.y);
 
-    // Launch the CUDA kernel
+  
     cudaSingleThread<<<gridSize, blockSize>>>(input_row, input_col, d_input, kernel_row, kernel_col, d_kernel, output_row, output_col, d_output);
 
-    // Copy the result back to host
+   
     cudaMemcpy(output, d_output, output_row * output_col * sizeof(long long unsigned int), cudaMemcpyDeviceToHost);
 
     // Free device memory
