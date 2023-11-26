@@ -9,6 +9,9 @@ using namespace std;
 
 #include "gpu_thread.h"
 
+#define TIME_NOW std::chrono::high_resolution_clock::now()
+#define TIME_DIFF(gran, start, end) std::chrono::duration_cast<gran>(end - start).count()
+
 // Used to cross-check answer. DO NOT MODIFY!
 void reference( int input_row, 
                 int input_col,
@@ -104,12 +107,19 @@ int main(int argc, char *argv[])
     int output_col = input_col - kernel_col + 1;
     
     // Execute reference program
+    
     long long unsigned int *output_reference = new long long unsigned int[output_row * output_col];
+    auto begin = TIME_NOW;
     reference(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_reference);    
+    auto end = TIME_NOW;
+    cout << "Reference execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";    
     
     // Execute gpuThread
     long long unsigned int *output_gpu = new long long unsigned int[output_row * output_col];
-    gpuThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_gpu);    
+    begin = TIME_NOW;
+    launchCudaSingleThread(input_row, input_col, input, kernel_row, kernel_col, kernel, output_row, output_col, output_gpu);    
+    end = TIME_NOW;
+    cout << "CUDA execution time: " << (double)TIME_DIFF(std::chrono::microseconds, begin, end) / 1000.0 << " ms\n";
     
     for(int i = 0; i < output_row * output_col; ++i)
         if(output_gpu[i] != output_reference[i]) {
