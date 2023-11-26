@@ -19,14 +19,16 @@ void singleThread(register int input_row,
             outputValue = 0;
             for (int kernel_i = 0; kernel_i < kernel_row; kernel_i++) {
                 val1 = output_i + (kernel_i+kernel_i);
-                input_i = val1 - input_row * (val1/input_row);
+                if (val1 < input_row)
+                    input_i = val1;
+                else
+                    input_i = val1 - input_row * (val1/input_row);
                 for (int kernel_j = 0; kernel_j < kernel_col; kernel_j++) {
-
-                    
                     val2 = output_j + (kernel_j+kernel_j);
-                    input_j = val2 - input_col*(val2/input_col);
-
-                    
+                    if(val2 < input_col)
+                        input_j = val2;
+                    else
+                        input_j = val2 - input_col*(val2/input_col);
                     outputValue += inputPtr[input_i * input_col + input_j] * kernel[kernel_i * kernel_col + kernel_j];
                 }
             }
